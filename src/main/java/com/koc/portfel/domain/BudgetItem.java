@@ -53,4 +53,13 @@ public class BudgetItem implements Comparable {
         }
         return 0;
     }
+
+    protected BudgetItem cloneForGivenOwningBudget(Budget owningBudget) {
+        BudgetItem clone = new BudgetItem();
+        clone.setCategory(getCategory());
+        clone.setOwningBudget(owningBudget);
+        clone.setMaxAmount(new BigDecimal(getMaxAmount().toEngineeringString()));
+
+        return clone;
+    }
 }

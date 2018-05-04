@@ -9,12 +9,13 @@ import java.util.*;
 @Entity
 @Data
 @NoArgsConstructor
+
 public class Budget {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToMany(mappedBy = "owningBudget")
+    @OneToMany(mappedBy = "owningBudget", fetch = FetchType.EAGER)
     @OrderBy("category ASC")
     private SortedSet<BudgetItem> budgetItems = new TreeSet<>();
 
@@ -40,5 +41,16 @@ public class Budget {
         return "Budget{" +
                 "id=" + id +
                 '}';
+    }
+
+    @Override
+    public Budget clone() {
+        final Budget clone = new Budget();
+        final SortedSet<BudgetItem> budgetItems = clone.getBudgetItems();
+        for (BudgetItem budgetItem: getBudgetItems()) {
+            final BudgetItem clonedBudgetItem = budgetItem.cloneForGivenOwningBudget(clone);
+            budgetItems.add(clonedBudgetItem);
+        }
+        return clone;
     }
 }

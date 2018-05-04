@@ -6,4 +6,5 @@ import com.koc.portfel.domain.BudgetItem;
 public interface BudgetService {
     Budget getCurrentBudget();
     boolean addBudgetItemToBudget(final BudgetItem budgetItem, final Budget owning);
+    Budget createSnapshot(Budget budget);
 }

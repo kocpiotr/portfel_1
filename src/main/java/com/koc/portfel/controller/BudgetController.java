@@ -12,7 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Set;
@@ -40,14 +39,12 @@ public class BudgetController {
         model.addAttribute("budgetItemToEdit", new BudgetItem());
         model.addAttribute("expenseCategories", availableCategoriesForBudget);
 
-        return "budget-plan-view";
+        return "budget-plan";
     }
 
     @RequestMapping(value = "/budget-plan-add")
-    public ModelAndView budgetPlanAdd(final @ModelAttribute BudgetItem newItem, final BindingResult bindingResult, final Model model) {
-        Budget currentBudget = budgetService.getCurrentBudget();
-        budgetService.addBudgetItemToBudget(newItem, currentBudget);
-
+    public ModelAndView budgetPlanAdd(final @ModelAttribute BudgetItem newItem) {
+        budgetService.addBudgetItemToBudget(newItem, budgetService.getCurrentBudget());
         return new ModelAndView("redirect:/budget-plan-view");
     }
 
@@ -58,8 +55,8 @@ public class BudgetController {
     }
 
     @RequestMapping("/budget-plan-edit")
-    public ModelAndView budgetPlanEdit(final @ModelAttribute BudgetItem itemToEdit, final BindingResult bindingResult, final Model model) {
-
+    public ModelAndView budgetPlanEdit(final @ModelAttribute BudgetItem itemToEdit) {
+        budgetItemSerice.update(itemToEdit);
         return new ModelAndView("redirect:/budget-plan-view");
     }
 }

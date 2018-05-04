@@ -30,4 +30,13 @@ public class BudgetServiceImpl implements BudgetService {
         budgetRepository.save(owning);
         return true;
     }
+
+    @Override
+    public Budget createSnapshot(Budget budget) {
+        final Budget snapshot = budget.clone();
+        budgetRepository.save(snapshot);
+        return snapshot;
+    }
+
+
 }

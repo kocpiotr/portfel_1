@@ -25,4 +25,14 @@ public class BudgetItemSericeImpl implements BudgetItemSerice {
         Optional<BudgetItem> byId = budgetItemRepository.findById(budgetItemToDeleteId);
         budgetItemRepository.delete(byId.get());
     }
+
+    @Override
+    public void update(BudgetItem itemToEdit) {
+        Optional<BudgetItem> budgetItemOptional = budgetItemRepository.findById(itemToEdit.getId());
+        if (budgetItemOptional.isPresent()) {
+            final BudgetItem budgetItem = budgetItemOptional.get();
+            budgetItem.setMaxAmount(itemToEdit.getMaxAmount());
+            budgetItemRepository.save(budgetItem);
+        }
+    }
 }

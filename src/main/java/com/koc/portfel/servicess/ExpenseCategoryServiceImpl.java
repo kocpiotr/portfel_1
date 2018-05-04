@@ -6,9 +6,7 @@ import com.koc.portfel.domain.ExpenseCategory;
 import com.koc.portfel.repositories.ExpenseCategoryRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Set;
-import java.util.SortedSet;
+import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -29,9 +27,10 @@ public class ExpenseCategoryServiceImpl implements ExpenseCategoryService {
         final Set<ExpenseCategory> currectlyUsedExpenceCategories = budget.getBudgetItems().stream()
                 .map(budgetItem -> budgetItem.getCategory())
                 .collect(Collectors.toSet());
-        final Set<ExpenseCategory> filteredExpenseItems = allExpenseItems.stream()
+        final SortedSet<ExpenseCategory> filteredExpenseItems = allExpenseItems.stream()
                 .filter(expenseCategory -> !currectlyUsedExpenceCategories.contains(expenseCategory))
-                .collect(Collectors.toSet());
+                .sorted(Comparator.comparing(ExpenseCategory::getName))
+                .collect(Collectors.toCollection(() -> new TreeSet<>()));
         return filteredExpenseItems;
     }
 }

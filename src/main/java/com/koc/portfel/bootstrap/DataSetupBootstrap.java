@@ -2,12 +2,15 @@ package com.koc.portfel.bootstrap;
 
 import com.koc.portfel.domain.*;
 import com.koc.portfel.repositories.*;
+import com.koc.portfel.servicess.BudgetInstanceService;
+import com.koc.portfel.servicess.BudgetService;
 import lombok.extern.java.Log;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -22,15 +25,19 @@ public class DataSetupBootstrap implements ApplicationListener<ContextRefreshedE
     private PersonRepository personRepository;
     private TransactionRepository transactionRepository;
     private BudgetRepository budgetRepository;
+    private BudgetInstanceService budgetInstanceService;
     private BudgetItemRepository budgetItemRepository;
+    private BudgetService budgetService;
 
-    public DataSetupBootstrap(ExpenseCategoryRepository expenseCategoryRepository, FinancialUnitRepository financialUnitRepository, PersonRepository personRepository, TransactionRepository transactionRepository, BudgetRepository budgetRepository, BudgetItemRepository budgetItemRepository) {
+    public DataSetupBootstrap(ExpenseCategoryRepository expenseCategoryRepository, FinancialUnitRepository financialUnitRepository, PersonRepository personRepository, TransactionRepository transactionRepository, BudgetRepository budgetRepository, BudgetInstanceService budgetInstanceService, BudgetItemRepository budgetItemRepository, BudgetService budgetService) {
         this.expenseCategoryRepository = expenseCategoryRepository;
         this.financialUnitRepository = financialUnitRepository;
         this.personRepository = personRepository;
         this.transactionRepository = transactionRepository;
         this.budgetRepository = budgetRepository;
+        this.budgetInstanceService = budgetInstanceService;
         this.budgetItemRepository = budgetItemRepository;
+        this.budgetService = budgetService;
     }
 
     @Override
@@ -38,8 +45,18 @@ public class DataSetupBootstrap implements ApplicationListener<ContextRefreshedE
         setupExpenseCategories();
         setupFinancialUnits();
         setupPersons();
-        setupTransationcs();
         setupBudgets();
+        setupBudgetInstance();
+        setupTransationcs();
+    }
+
+    private void setupBudgetInstance() {
+        BudgetInstance budgetInstance = new BudgetInstance();
+        budgetInstance.setName("Obecny");
+        budgetInstance.setPeriodStart(LocalDate.now().withDayOfMonth(1));
+        budgetInstance.setPeriodEnd(LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth()));
+
+        budgetInstanceService.save(budgetInstance);
     }
 
     private void setupBudgets() {
@@ -99,12 +116,12 @@ public class DataSetupBootstrap implements ApplicationListener<ContextRefreshedE
         final Set<Person> persons = new HashSet<>();
         Person p1 = new Person();
         p1.setFirstName("Małgorzata");
-        p1. setLastName("Koc");
+        p1.setLastName("Koc");
         persons.add(p1);
 
         Person p2 = new Person();
         p2.setFirstName("Piotr");
-        p2. setLastName("Koc");
+        p2.setLastName("Koc");
         persons.add(p2);
 
         personRepository.saveAll(persons);
@@ -112,14 +129,14 @@ public class DataSetupBootstrap implements ApplicationListener<ContextRefreshedE
 
     private void setupTransationcs() {
         final Set<Transaction> transactions = new HashSet<>();
-        Transaction t1 = new Transaction();
-        t1.setAmount(new BigDecimal(10));
-        ExpenseCategory gaz = expenseCategoryRepository.findByName("Gaz");
-        Iterable<ExpenseCategory> all = expenseCategoryRepository.findAll();
+        final ExpenseCategory gaz = expenseCategoryRepository.findByName("Gaz");
+        final BudgetInstance currentBudgetInstnace = budgetInstanceService.getCurrentBudgetInstance();
+        final Transaction transaction = new Transaction();
+        transaction.setAmount(new BigDecimal(10));
+        transaction.setCategory(gaz);
+        transaction.setBudgetInstance(currentBudgetInstnace);
 
-
-        t1.setCategory(gaz);
-        transactions.add(t1);
+        transactions.add(transaction);
         transactionRepository.saveAll(transactions);
     }
 }

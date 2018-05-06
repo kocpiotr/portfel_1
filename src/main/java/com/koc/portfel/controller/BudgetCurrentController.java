@@ -48,7 +48,7 @@ public class BudgetCurrentController {
     }
 
     private void populateView(Model model, BudgetInstance instance) {
-        final Set<ExpenseCategory> availableCategoriesForBudget = expenseCategoryService.getCategoriesForBudget(instance.getBudgetTemplate());
+        final Set<ExpenseCategory> availableCategoriesForBudget = expenseCategoryService.getCategoriesForBudgetInstance(instance);
 
         model.addAttribute("instance", instance);
         model.addAttribute("emptyTransaction", new Transaction());

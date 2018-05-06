@@ -1,5 +1,6 @@
 package com.koc.portfel.servicess;
 
+import com.koc.portfel.dao.BudgetInstanceStatsDTO;
 import com.koc.portfel.domain.Budget;
 import com.koc.portfel.domain.BudgetInstance;
 import com.koc.portfel.repositories.BudgetInstanceRepository;
@@ -67,6 +68,21 @@ public class BudgetInstanceServiceImpl implements BudgetInstanceService {
     public BudgetInstance getCurrentBudgetInstance() {
         //TODO temp solution it should return budget market as current (only one current budget at time) rather than first....
         return budgetInstanceRepository.findAll().iterator().next();
+    }
+
+    @Override
+    public BudgetInstanceStatsDTO getStats() {
+        final BudgetInstance currentBudgetInstance = getCurrentBudgetInstance();
+        final Budget budgetTemplate = currentBudgetInstance.getBudgetTemplate();
+        final BudgetInstanceStatsDTO stats = new BudgetInstanceStatsDTO();
+
+        budgetTemplate.getBudgetItems().stream()
+                .forEach(budgetItem -> stats.setCategoryLimit(budgetItem.getCategory(), budgetItem.getMaxAmount()));
+
+        currentBudgetInstance.getTransactions().stream()
+                .forEach(transaction -> stats.addStat(transaction.getCategory(), transaction.getAmount()));
+
+        return stats;
     }
 
     private void populateBudgetTemplate(BudgetInstance newInstnace) {

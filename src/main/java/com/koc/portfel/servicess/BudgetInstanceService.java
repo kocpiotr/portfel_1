@@ -1,5 +1,6 @@
 package com.koc.portfel.servicess;
 
+import com.koc.portfel.dao.BudgetInstanceStatsDTO;
 import com.koc.portfel.domain.Budget;
 import com.koc.portfel.domain.BudgetInstance;
 
@@ -17,4 +18,6 @@ public interface BudgetInstanceService {
     void update(BudgetInstance instanceToEdit);
 
     BudgetInstance getCurrentBudgetInstance();
+
+    BudgetInstanceStatsDTO getStats();
 }

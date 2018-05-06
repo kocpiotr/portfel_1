@@ -15,7 +15,7 @@ public class Budget {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToMany(mappedBy = "owningBudget", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "owningBudget", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @OrderBy("category ASC")
     private SortedSet<BudgetItem> budgetItems = new TreeSet<>();
 

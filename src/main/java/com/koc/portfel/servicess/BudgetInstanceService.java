@@ -19,5 +19,5 @@ public interface BudgetInstanceService {
 
     BudgetInstance getCurrentBudgetInstance();
 
-    BudgetInstanceStatsDTO getStats();
+    BudgetInstanceStatsDTO buildStats();
 }

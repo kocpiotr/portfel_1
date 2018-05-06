@@ -1,6 +1,7 @@
 package com.koc.portfel.dao;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.koc.portfel.domain.ExpenseCategory;
 import lombok.EqualsAndHashCode;
 
@@ -9,9 +10,10 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 
-@EqualsAndHashCode
 @JsonFormat(shape = JsonFormat.Shape.ARRAY)
-public class ExpenseCategoryStatDTO implements Serializable {
+@JsonPropertyOrder({"categoryName", "percentUsed"})
+@EqualsAndHashCode
+public class ExpenseCategoryStatDTO implements Serializable, Comparable<ExpenseCategoryStatDTO> {
     public static final BigDecimal HUNDRED = new BigDecimal(100);
 
     private BigDecimal currentValue = BigDecimal.ZERO;
@@ -33,5 +35,14 @@ public class ExpenseCategoryStatDTO implements Serializable {
 
     public void addToCurrentValue(final BigDecimal addition) {
         currentValue = currentValue.add(addition);
+    }
+
+    @Override
+    public int compareTo(ExpenseCategoryStatDTO other) {
+        int comparision = (this.getPercentUsed().intValue() - other.getPercentUsed().intValue()) * (-1);
+        if (comparision == 0) {
+            comparision = this.getCategoryName().compareTo(other.getCategoryName());
+        }
+        return comparision;
     }
 }

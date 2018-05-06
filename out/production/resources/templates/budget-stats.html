@@ -43,8 +43,7 @@
         function drawChart() {
 
             var dataArray = [
-                ['Label', 'Value'],
-                ['Test', 0]
+                ['Label', 'Value']
             ];
 
             $.ajax({
@@ -73,7 +72,6 @@
             };
 
             var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
-
             chart.draw(data, options);
         }
     </script>

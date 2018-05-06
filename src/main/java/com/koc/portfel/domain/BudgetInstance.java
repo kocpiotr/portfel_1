@@ -20,7 +20,7 @@ public class BudgetInstance implements Comparable<BudgetInstance> {
     @ManyToOne
     private Budget budgetTemplate;
 
-    @OneToMany(mappedBy = "budgetInstance")
+    @OneToMany(mappedBy = "budgetInstance", cascade = CascadeType.ALL)
     @OrderBy("id desc ")
     private SortedSet<Transaction> transactions = new TreeSet<>();
 

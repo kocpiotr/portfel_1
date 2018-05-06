@@ -71,7 +71,7 @@ public class BudgetInstanceServiceImpl implements BudgetInstanceService {
     }
 
     @Override
-    public BudgetInstanceStatsDTO getStats() {
+    public BudgetInstanceStatsDTO buildStats() {
         final BudgetInstance currentBudgetInstance = getCurrentBudgetInstance();
         final Budget budgetTemplate = currentBudgetInstance.getBudgetTemplate();
         final BudgetInstanceStatsDTO stats = new BudgetInstanceStatsDTO();

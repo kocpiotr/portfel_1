@@ -38,7 +38,6 @@ public class BudgetController {
         model.addAttribute("emptyBudgetItem", new BudgetItem());
         model.addAttribute("budgetItemToEdit", new BudgetItem());
         model.addAttribute("expenseCategories", availableCategoriesForBudget);
-
         return "budget-plan";
     }
 

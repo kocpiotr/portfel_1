@@ -4,7 +4,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.Objects;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 @Entity
 @Data
@@ -18,6 +20,7 @@ public class Budget {
     @OneToMany(mappedBy = "owningBudget", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @OrderBy("category ASC")
     private SortedSet<BudgetItem> budgetItems = new TreeSet<>();
+
 
     //--------------------------- IMPLEMENTED METHODS ------------------------------------------------
 
@@ -47,7 +50,7 @@ public class Budget {
     public Budget clone() {
         final Budget clone = new Budget();
         final SortedSet<BudgetItem> budgetItems = clone.getBudgetItems();
-        for (BudgetItem budgetItem: getBudgetItems()) {
+        for (BudgetItem budgetItem : getBudgetItems()) {
             final BudgetItem clonedBudgetItem = budgetItem.cloneForGivenOwningBudget(clone);
             budgetItems.add(clonedBudgetItem);
         }

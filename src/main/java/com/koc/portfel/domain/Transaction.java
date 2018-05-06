@@ -39,7 +39,6 @@ public class Transaction implements Comparable<Transaction> {
     @ManyToOne
     private BudgetInstance budgetInstance;
 
-
     /**
      * Who paid.
      */

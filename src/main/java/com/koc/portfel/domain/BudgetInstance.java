@@ -16,14 +16,11 @@ public class BudgetInstance implements Comparable<BudgetInstance> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     @ManyToOne
     private Budget budgetTemplate;
-
     @OneToMany(mappedBy = "budgetInstance", cascade = CascadeType.ALL)
     @OrderBy("id desc ")
     private SortedSet<Transaction> transactions = new TreeSet<>();
-
     private String name;
     private LocalDate periodStart;
     private LocalDate periodEnd;

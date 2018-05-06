@@ -15,13 +15,11 @@ public class BudgetItem implements Comparable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     @OneToOne
     private ExpenseCategory category;
-    private BigDecimal maxAmount;
-
     @ManyToOne
     private Budget owningBudget;
+    private BigDecimal maxAmount;
 
     public void setOwningBudget(Budget owningBudget) {
         this.owningBudget = owningBudget;

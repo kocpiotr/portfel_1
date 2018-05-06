@@ -17,9 +17,7 @@ public class FinancialUnit {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     private String name;
-
     public FinancialUnit(final String name) {
         this.name = name;
     }
